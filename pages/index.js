@@ -3,17 +3,40 @@ import {
   Box, 
   Grid, 
   Container, 
-  Paper, 
-  AppBar, 
-  Toolbar, 
+  Paper,
   Typography 
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import ImageList from './ImageList';
-import ImageViewer from './ImageViewer';
-import AddImageButton from './AddImageButton';
+import ImageList from '../components/ImageList';
+import ImageViewer from '../components/ImageViewer';
+import InferenceInterface from '../components/InferenceInterface';
+import AddImageButton from '../components/AddImageButton';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import '../styles/Home.module.css';
+
+const useStyles = makeStyles({
+  paper: {
+    padding: '10px',
+    border: '1px solid black',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  fullHeight: {
+    height: '75vh',
+    flex: '1 1 auto',
+  },
+  addButton: {
+    paddingTop: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  header: {
+    margin: '50px',
+  }
+});
 
 export default function Home() {
 
@@ -22,28 +45,21 @@ export default function Home() {
 
   useEffect(() => {
     // Load images from your API
-  }, []);
+    const loadImages = async () => {
+      let loadedImages = [
+        {
+          name: 'Car',
+          url: 'dead.url.cq1'
+        }
+      ]; // replace this with your actual API call
+      setImages(loadedImages);
+      if (loadedImages.length > 0) {
+        setSelectedImage(loadedImages[0]);
+      }
+    }
 
-  const useStyles = makeStyles({
-    paper: {
-      padding: '10px',
-      border: '1px solid black',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    fullHeight: {
-      height: '75vh',
-      flex: '1 1 auto',
-    },
-    addButton: {
-      paddingTop: '10px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      height: '100%',
-    },
-  });
+    loadImages();
+  }, []);
 
   const classes = useStyles();
 
@@ -59,16 +75,20 @@ export default function Home() {
     // Open a file dialog and upload image via API, then update local state
   };
 
+  const onInference = () => {
+    // Perform inference on the selected image
+  }
+
   return (
     <div>
       <Head>
-        <title>CIFAR Deep Net</title>
+        <title>CIFAR DeepNet</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <Box>
-          <Box display="flex" flexDirection="column" justifycontent="center" alignItems="center">
-            <Typography variant="h3" component="h1" gutterBottom>CIFAR Deep Net</Typography>
+          <Box display="flex" flexDirection="column" justifycontent="center" alignItems="center" className={classes.header}>
+            <Typography variant="h3" component="h1" gutterBottom>CIFAR DeepNet</Typography>
           </Box>
           <Box display="flex" flexDirection="column" justifycontent="center" height="calc(80vh - 64px)" >
             <Container className={classes.fullHeight}>
@@ -84,9 +104,8 @@ export default function Home() {
                   </Paper>
                 </Grid>
                 <Grid item xs={12} sm={9}>
-                  <Paper className={`${classes.paper} ${classes.fullHeight}`}>
-                    <ImageViewer selectedImage={selectedImage} />
-                  </Paper>
+                  <ImageViewer selectedImage={selectedImage} />
+                  <InferenceInterface onInference={onInference}/>
                 </Grid>
               </Grid>
             </Container>
