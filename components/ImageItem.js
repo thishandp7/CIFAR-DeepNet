@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 });
 
 const ImageItem = ({ image, selectImage, deleteImage }) => {
-    
+
     const classes = useStyles();
 
     return (
@@ -25,7 +25,7 @@ const ImageItem = ({ image, selectImage, deleteImage }) => {
                 <ListItemText primary={image.name} />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={() => deleteImage(image)}>
-                    <DeleteIcon />
+                        <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>

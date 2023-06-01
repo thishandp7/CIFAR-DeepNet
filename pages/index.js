@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Grid, 
-  Container, 
+import {
+  Box,
+  Grid,
+  Container,
   Paper,
-  Typography 
+  Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import ImageList from '../components/ImageList';
@@ -46,15 +46,15 @@ export default function Home() {
   useEffect(() => {
     // Load images from your API
     const loadImages = async () => {
-      let loadedImages = [
-        {
-          name: 'Car',
-          url: 'dead.url.cq1'
-        }
-      ]; // replace this with your actual API call
-      setImages(loadedImages);
+      let response = await fetch('/api/images');
+      let loadedImages = await Promise.resolve(response.json())
+      console.log('loadedImages', loadedImages)
       if (loadedImages.length > 0) {
         setSelectedImage(loadedImages[0]);
+        setImages(loadedImages);
+      } else {
+        setSelectedImage();
+        setImages([]);
       }
     }
 
@@ -105,7 +105,7 @@ export default function Home() {
                 </Grid>
                 <Grid item xs={12} sm={9}>
                   <ImageViewer selectedImage={selectedImage} />
-                  <InferenceInterface onInference={onInference}/>
+                  <InferenceInterface onInference={onInference} />
                 </Grid>
               </Grid>
             </Container>
